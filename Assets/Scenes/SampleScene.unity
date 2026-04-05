@@ -1671,6 +1671,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4463928228472108579, guid: 9aeeca638aac147029794dff03813ee4, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4463928228472108579, guid: 9aeeca638aac147029794dff03813ee4, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4463928228472108579, guid: 9aeeca638aac147029794dff03813ee4, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7632341676883989308, guid: 9aeeca638aac147029794dff03813ee4, type: 3}
       propertyPath: m_Name
       value: LandingParticles
