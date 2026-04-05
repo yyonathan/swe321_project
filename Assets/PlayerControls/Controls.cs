@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     /* bool checks: these are here for communication between update and fixed update*/
     // physics based bool checks
     private bool _isGrounded;
+    private bool _wasGrounded;
     private bool _isFalling;
     private bool _atTerminalVelocity;
     private bool _atJumpApex;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 _boxSize;
     [SerializeField] private float _castDistance;
     [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private GameObject _landingParticles;
 
     // temporary or saved/cached variables
     private float _currentMaxSpeed;
@@ -74,6 +76,11 @@ public class PlayerController : MonoBehaviour
         AtTerminalVelocity();
         AtJumpApex();
 
+        if(!_wasGrounded && _isGrounded)
+        {
+            SpawnLandingEffect();
+        }
+
         // apply forces
         FallFaster(); // if falling and not grounded, scale the gravity.
         ApplyTerminalVelocity(); // ensures you wont fall faster than the assigned terminal velocity.
@@ -82,6 +89,8 @@ public class PlayerController : MonoBehaviour
         JumpCut();
 
         Run(); 
+
+        _wasGrounded = _isGrounded;
     }
 
     // Update is called once per frame
@@ -255,5 +264,10 @@ public class PlayerController : MonoBehaviour
         _currentVelocityX = Mathf.SmoothDamp(rb.linearVelocity.x, targetSpeed, ref _velocityXSmoothing, accelTime, Mathf.Infinity, Time.fixedDeltaTime);
 
         rb.linearVelocity = new Vector2(_currentVelocityX, rb.linearVelocity.y);
+    }
+
+    private void SpawnLandingEffect()
+    {
+        Instantiate(_landingParticles, transform.position, Quaternion.identity);
     }
 }
