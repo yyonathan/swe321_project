@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,9 +8,7 @@ public class PlayerController : MonoBehaviour
 
     // player data
     [SerializeField] private ControlsData _data;
-
-    [SerializeField] private InputActionReference _move;
-    [SerializeField] private InputActionReference _jump;
+    [SerializeField] private PlayerInputState _inputState;
 
     /* bool checks: these are here for communication between update and fixed update*/
     // physics based bool checks
@@ -55,17 +52,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void OnEnable()
-    {
-        _move.action.Enable();
-        _jump.action.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _move.action.Disable();
-        _jump.action.Disable();
-    }
     void FixedUpdate()
     {
         // checks (assign boolean fields)
@@ -141,9 +127,9 @@ public class PlayerController : MonoBehaviour
      */
     private void ReadAllInput()
     {
-        _moveInput = _move.action.ReadValue<Vector2>();
+        _moveInput = _inputState.Move;
 
-        if (_jump.action.WasPressedThisFrame())
+        if (_inputState.JumpPressed)
         {
             _jumpBufferCounter = _data.jumpBufferTime;
         }
@@ -157,12 +143,13 @@ public class PlayerController : MonoBehaviour
             _isJump = true;
         }
 
-        if (_jump.action.WasReleasedThisFrame())
+        if (_inputState.SupportsJumpCut && _inputState.JumpReleased)
         {
             _isJumpCut = !_isFalling;
         }
-    }
 
+        _inputState.ConsumeFrameInput();
+    }
 
     /*
     apply forces
