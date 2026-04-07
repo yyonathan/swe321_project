@@ -18,6 +18,7 @@ MonoBehaviour:
   jumpCutMultiplier: 0.3
   jumpApexRange: 10
   jumpBufferTime: 0.15
+  coyoteTime: 0.1
   accelAmount: 0.2
   deccelAmount: 0.15
   regularGravity: 8
