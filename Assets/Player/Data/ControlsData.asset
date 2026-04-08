@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c29bdfe6f377484aabe58556d3af5f0, type: 3}
   m_Name: ControlsData
   m_EditorClassIdentifier: Assembly-CSharp::ControlsData
-  baseMaxSpeed: 8
-  baseJumpForce: 30
-  jumpApexMultiplier: 1.18
-  jumpCutMultiplier: 0.3
-  jumpApexRange: 10
-  jumpBufferTime: 0.15
-  coyoteTime: 0.1
-  accelAmount: 0.2
-  deccelAmount: 0.15
-  regularGravity: 8
-  fallingGravity: 2
-  terminalVelocity: -20
+  _baseMaxSpeed: 0
+  _baseJumpForce: 0
+  _jumpApexMultiplier: 0
+  _jumpCutMultiplier: 0
+  _jumpApexRange: 0
+  _jumpBufferTime: 0
+  _coyoteTime: 0
+  _accelAmount: 0
+  _deccelAmount: 0
+  regularGravity: 0
+  fallingGravity: 0
+  terminalVelocity: 0

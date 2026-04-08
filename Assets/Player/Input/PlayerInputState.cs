@@ -22,6 +22,7 @@ public class PlayerInputState : MonoBehaviour
         JumpReleased = value;
     }
 
+    // jump cut won't exactly be possible with swipe up, so this flag will be used as a check
     public void SetSupportsJumpCut(bool value)
     {
         SupportsJumpCut = value;

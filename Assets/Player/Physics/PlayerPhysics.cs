@@ -4,13 +4,15 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     // components
-    public Rigidbody2D rb { get; private set; }
+    public Rigidbody2D rb;
 
     // player data
     [SerializeField] private ControlsData _data;
+
+    // contains live updated input data from whatever input device the player is using (touch, keyboard, whatever else we decide to implement which likely won't be much)
     [SerializeField] private PlayerInputState _inputState;
 
-    /* bool checks: these are here for communication between update and fixed update*/
+    // bool checks: these are here for communication between update and fixed update
     // physics based bool checks
     private bool _isGrounded;
     private bool _isFalling;
@@ -24,7 +26,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _moveInput;
 
-    // set all of these up in the inspector
     [Header("Raycasting")]
     [SerializeField] private Vector2 _boxSize;
     [SerializeField] private float _castDistance;
@@ -33,17 +34,17 @@ public class PlayerController : MonoBehaviour
     // temporary or saved/cached variables
     private float _currentMaxSpeed;
     private float _currentVelocityX;
-    private float _velocityXSmoothing; // reference value that unity will use internally for some reason
+    private float _velocityXSmoothing; // reference value that unity will use internally
     private float _jumpBufferCounter;
     private float _coyoteCounter;
     private float _accelDelta, _deccelDelta; // actual acceleration/decceleration force applied to player
-
+        
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        // saves the base max speed so whenever the max speed itself is altered
-        _currentMaxSpeed = _data.baseMaxSpeed;
+        // saves the original base max speed so whenever the max speed itself is altered
+        _currentMaxSpeed = _data.BaseMaxSpeed;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -77,9 +78,8 @@ public class PlayerController : MonoBehaviour
         ReadAllInput(); // enables and disables various input fields for methods in fixed update to read (things like _isJump and _isJumpCut)
     }
 
-    /*
-     * physics based checks (assign boolean fields)
-    */
+
+    // physics based checks (assign boolean fields)
     // projects a raycast below the player to check if they are grounded
     // will be assigned in fixed updated since this is physics based
     private void IsGrounded()
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
         {
             _isGrounded = true;
             _isMidJump = false; // this is for jumping when falling off of a ledge
-            _coyoteCounter = _data.coyoteTime; // resetting timer
+            _coyoteCounter = _data.CoyoteTime; // resetting timer
         }
         else
         {
@@ -113,25 +113,23 @@ public class PlayerController : MonoBehaviour
     // fixes terminal velocity boolean if the player is falling faster than terminal velocity
     private void AtTerminalVelocity()
     {
-        _atTerminalVelocity = rb.linearVelocity.y < _data.terminalVelocity;
+        _atTerminalVelocity = rb.linearVelocity.y < _data.TerminalVelocity;
     }
 
     // checks player if they are at a jump apex (y velocity close to 0
     private void AtJumpApex()
     {
-        _atJumpApex = !_isGrounded && Mathf.Abs(rb.linearVelocity.y) < _data.jumpApexRange;
+        _atJumpApex = !_isGrounded && Mathf.Abs(rb.linearVelocity.y) < _data.JumpApexRange;
     }
 
-    /*
-     * input based checks
-     */
+    // populating/updating necessary flags and other variables to be used for movement logic
     private void ReadAllInput()
     {
         _moveInput = _inputState.Move;
 
         if (_inputState.JumpPressed)
         {
-            _jumpBufferCounter = _data.jumpBufferTime;
+            _jumpBufferCounter = _data.JumpBufferTime;
         }
         else
         {
@@ -151,22 +149,17 @@ public class PlayerController : MonoBehaviour
         _inputState.ConsumeFrameInput();
     }
 
-    /*
-    apply forces
-    */
+    // apply forces
     // does physics stuff to apply a jump to the player
     private void Jump()
     {
         if (_isJump)
         {
-            // if  velocity is downward, cancel momentum and then apply the jump
+            // if  velocity is downward, cancel momentum and THEN apply the jump
             // (this lets you jump seamlessly while standing on a falling platform)
             // however, if you are moving up, momentum is conserved (idk if this is correct physics terminology but whatever)
-            //if (rb.linearVelocity.y < 0) // logic not same as IsFalling(), so that is not used here
-            //{
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-            //}
-            rb.AddForce(Vector2.up * _data.baseJumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * _data.BaseJumpForce, ForceMode2D.Impulse);
             _isJump = false;
             _isMidJump = true;
             _coyoteCounter = 0f;
@@ -176,12 +169,12 @@ public class PlayerController : MonoBehaviour
 
     // applies force to player when falling down and space bar is released
     // I NOW REALIZE AFTER IMPLEMENTING THIS that this won't exactly work with a swipe up
-    // when handling mobile controls, this should 
+    // when handling mobile controls, this shouldn't even get called
     private void JumpCut()
     {
         if (_isJumpCut)
         {
-            rb.AddForce(Vector2.down * rb.linearVelocity.y * (1 - _data.jumpCutMultiplier), ForceMode2D.Impulse);
+            rb.AddForce(Vector2.down * rb.linearVelocity.y * (1 - _data.JumpCutMultiplier), ForceMode2D.Impulse);
             _isJumpCut = false;
         }
     }
@@ -191,11 +184,11 @@ public class PlayerController : MonoBehaviour
     {
         if (_isFalling)
         {
-            rb.gravityScale = _data.regularGravity * _data.fallingGravity;
+            rb.gravityScale = _data.RegularGravity * _data.FallingGravity;
         }
         else
         {
-            rb.gravityScale = _data.regularGravity;
+            rb.gravityScale = _data.RegularGravity;
         }
     }
 
@@ -204,7 +197,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_atTerminalVelocity)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, _data.terminalVelocity);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, _data.TerminalVelocity);
         }
     }
 
@@ -213,14 +206,15 @@ public class PlayerController : MonoBehaviour
     {
         if (_atJumpApex)
         {
-            _currentMaxSpeed = _data.baseMaxSpeed * _data.jumpApexMultiplier;
+            _currentMaxSpeed = _data.BaseMaxSpeed * _data.JumpApexMultiplier;
         }
         else
         {
-            _currentMaxSpeed = _data.baseMaxSpeed;
+            _currentMaxSpeed = _data.BaseMaxSpeed;
         }
     }
 
+    // used purely for debugging purposes to view the hitbox of the ground detection
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
@@ -232,8 +226,8 @@ public class PlayerController : MonoBehaviour
         float targetSpeed = _moveInput.x * _currentMaxSpeed;
 
         // accounts for fixed deltatime and current max speed to do the accel time equation with proper values
-        _accelDelta = _data.accelAmount * Time.fixedDeltaTime * _currentMaxSpeed;
-        _deccelDelta = _data.deccelAmount * Time.fixedDeltaTime * _currentMaxSpeed;
+        _accelDelta = _data.AccelAmount * Time.fixedDeltaTime * _currentMaxSpeed;
+        _deccelDelta = _data.DeccelAmount * Time.fixedDeltaTime * _currentMaxSpeed;
 
         // choose acceleration vs deceleration time
         float accelTime = (Mathf.Abs(targetSpeed) > 0.01f) ? _accelDelta : _deccelDelta;
