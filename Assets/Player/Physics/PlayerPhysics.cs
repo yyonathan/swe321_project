@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     [Header("Raycasting")]
     [SerializeField] private Vector2 _boxSize;
     [SerializeField] private float _castDistance;
-    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private LayerMask _surfaceLayer;
 
     // temporary or saved/cached variables
     private float _currentMaxSpeed;
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
     // will be assigned in fixed updated since this is physics based
     private void IsGrounded()
     {
-        if (Physics2D.BoxCast(transform.position, _boxSize, 0, -transform.up, _castDistance, _groundLayer))
+        if (Physics2D.BoxCast(transform.position, _boxSize, 0, -transform.up, _castDistance, _surfaceLayer))
         {
             _isGrounded = true;
             _isMidJump = false; // this is for jumping when falling off of a ledge
