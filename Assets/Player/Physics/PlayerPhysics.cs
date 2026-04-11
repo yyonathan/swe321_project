@@ -211,7 +211,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // used purely for debugging purposes to view the hitbox of the ground detection
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
     }

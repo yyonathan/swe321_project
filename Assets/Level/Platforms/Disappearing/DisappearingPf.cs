@@ -3,11 +3,11 @@ using System.Collections;
 
 public class DisappearingPf : MonoBehaviour
 {
-    [Header("Timing")]
+    [Header("timing")]
     [SerializeField] private float _fadeDuration = 1f;
     [SerializeField] private float _disableDuration = 0.1f;
 
-    [Header("Detection")]
+    [Header("detection")]
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _detectHeight = 0.1f;
     [SerializeField] private float _detectYOffset = 0.05f;
