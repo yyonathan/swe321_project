@@ -12,17 +12,10 @@ public class PlayerController : MonoBehaviour
     // contains live updated input data from whatever input device the player is using (touch, keyboard, whatever else we decide to implement which likely won't be much)
     [SerializeField] private PlayerInputState _inputState;
 
-    // bool checks: these are here for communication between update and fixed update
-    // physics based bool checks
+    // core state
     private bool _isGrounded;
-    private bool _isFalling;
-    private bool _atTerminalVelocity;
-    private bool _atJumpApex;
-
-    // input based bool checks
-    private bool _isJump;
-    private bool _isJumpCut;
-    private bool _isMidJump;
+    private bool _jumpQueued;
+    private bool _jumpCutQueued;
 
     private Vector2 _moveInput;
 
@@ -31,7 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _castDistance;
     [SerializeField] private LayerMask _surfaceLayer;
 
-    // temporary or saved/cached variables
+
+    // cached values
     private float _currentMaxSpeed;
     private float _currentVelocityX;
     private float _velocityXSmoothing; // reference value that unity will use internally
@@ -42,84 +36,53 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        // saves the original base max speed so whenever the max speed itself is altered
         _currentMaxSpeed = _data.BaseMaxSpeed;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    void FixedUpdate()
-    {
-        // checks (assign boolean fields)
-        IsGrounded(); // checks if you are standing on ground.
-        IsFalling(); // checks if you are falling in the air (negative y velocity)
-        AtTerminalVelocity();
-        AtJumpApex();
-
-        // apply forces
-        FallFaster(); // if falling and not grounded, scale the gravity.
-        ApplyTerminalVelocity(); // ensures you wont fall faster than the assigned terminal velocity.
-        BoostJumpApex(); // increases max speed when at apex of jump
-        Jump();
-        JumpCut();
-
-        Run(); 
     }
 
     // Update is called once per frame
     void Update()
     {
-        // checks (assign boolean fields)
-        ReadAllInput(); // enables and disables various input fields for methods in fixed update to read (things like _isJump and _isJumpCut)
+        ReadAllInput();
     }
 
-
-    // physics based checks (assign boolean fields)
-    // projects a raycast below the player to check if they are grounded
-    // will be assigned in fixed updated since this is physics based
-    private void IsGrounded()
+    void FixedUpdate()
     {
-        if (Physics2D.BoxCast(transform.position, _boxSize, 0, -transform.up, _castDistance, _surfaceLayer))
+        UpdateGroundedState();
+
+        HandleJump();
+        HandleJumpCut();
+        ApplyFallGravity();
+        ApplyTerminalVelocity();
+        ApplyJumpApexBoost();
+        Run();
+    }
+
+    private void UpdateGroundedState()
+    {
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, _boxSize, 0, -transform.up, _castDistance, _surfaceLayer);
+
+        if (hit.collider != null)
         {
-            _isGrounded = true;
-            _isMidJump = false; // this is for jumping when falling off of a ledge
-            _coyoteCounter = _data.CoyoteTime; // resetting timer
+
+            float surfaceTop = hit.collider.bounds.max.y;
+            float playerBottom = GetComponent<Collider2D>().bounds.min.y;
+
+            if (playerBottom >= surfaceTop - 0.05f)
+            {
+                _isGrounded = true;
+                _coyoteCounter = _data.CoyoteTime;
+            }
+            else
+            {
+                _isGrounded = false;
+                _coyoteCounter -= Time.fixedDeltaTime;
+            }
         }
         else
         {
             _isGrounded = false;
             _coyoteCounter -= Time.fixedDeltaTime;
         }
-    }
-
-    // checks if player is falling by seeing if y velocity is negative and if the player is in the air.
-    private void IsFalling()
-    {
-        if (rb.linearVelocity.y < 0 && !_isGrounded)
-        {
-            _isFalling = true;
-        }
-        else
-        {
-            _isFalling = false;
-        }
-    }
-
-    // fixes terminal velocity boolean if the player is falling faster than terminal velocity
-    private void AtTerminalVelocity()
-    {
-        _atTerminalVelocity = rb.linearVelocity.y < _data.TerminalVelocity;
-    }
-
-    // checks player if they are at a jump apex (y velocity close to 0
-    private void AtJumpApex()
-    {
-        _atJumpApex = !_isGrounded && Mathf.Abs(rb.linearVelocity.y) < _data.JumpApexRange;
     }
 
     // populating/updating necessary flags and other variables to be used for movement logic
@@ -136,53 +99,68 @@ public class PlayerController : MonoBehaviour
             _jumpBufferCounter -= Time.deltaTime;
         }
 
-        if (_jumpBufferCounter > 0f && (_isGrounded || _coyoteCounter > 0f) && !_isMidJump)
+        if (_jumpBufferCounter > 0f && (_isGrounded || _coyoteCounter > 0f))
         {
-            _isJump = true;
+            _jumpQueued = true;
         }
 
         if (_inputState.SupportsJumpCut && _inputState.JumpReleased)
         {
-            _isJumpCut = !_isFalling;
+            _jumpCutQueued = true;
         }
 
         _inputState.ConsumeFrameInput();
     }
 
-    // apply forces
-    // does physics stuff to apply a jump to the player
-    private void Jump()
+    private void HandleJump()
     {
-        if (_isJump)
+        if (!_jumpQueued)
         {
-            // if  velocity is downward, cancel momentum and THEN apply the jump
-            // (this lets you jump seamlessly while standing on a falling platform)
-            // however, if you are moving up, momentum is conserved (idk if this is correct physics terminology but whatever)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
-            rb.AddForce(Vector2.up * _data.BaseJumpForce, ForceMode2D.Impulse);
-            _isJump = false;
-            _isMidJump = true;
-            _coyoteCounter = 0f;
-            _jumpBufferCounter = 0f;
+            return;
         }
+
+        if (!(_isGrounded || _coyoteCounter > 0f))
+        {
+            return;
+        }
+
+        // if velocity is downward, cancel momentum and THEN apply the jump
+        // (this lets you jump seamlessly while standing on a falling platform)
+        // however, if you are moving up, momentum is conserved (idk if this is correct physics terminology but whatever)
+        if (rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+        }
+        rb.AddForce(Vector2.up * _data.BaseJumpForce, ForceMode2D.Impulse);
+
+        _jumpQueued = false;
+        _jumpCutQueued = false;
+        _jumpBufferCounter = 0f;
+        _coyoteCounter = 0f;
+        _isGrounded = false;
     }
 
-    // applies force to player when falling down and space bar is released
-    // I NOW REALIZE AFTER IMPLEMENTING THIS that this won't exactly work with a swipe up
-    // when handling mobile controls, this shouldn't even get called
-    private void JumpCut()
+    private void HandleJumpCut()
     {
-        if (_isJumpCut)
+        if (!_jumpCutQueued)
+        {
+            return;
+        }
+
+        // only cut jump if still moving upward
+        if (rb.linearVelocity.y > 0f)
         {
             rb.AddForce(Vector2.down * rb.linearVelocity.y * (1 - _data.JumpCutMultiplier), ForceMode2D.Impulse);
-            _isJumpCut = false;
         }
+
+        _jumpCutQueued = false;
     }
 
-    // while falling in the air, change gravity scale
-    private void FallFaster()
+    private void ApplyFallGravity()
     {
-        if (_isFalling)
+        bool isFalling = !_isGrounded && rb.linearVelocity.y < 0f;
+
+        if (isFalling)
         {
             rb.gravityScale = _data.RegularGravity * _data.FallingGravity;
         }
@@ -192,19 +170,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // if at at terminal velocity, prevent player from going faster
     private void ApplyTerminalVelocity()
     {
-        if (_atTerminalVelocity)
+        if (rb.linearVelocity.y < _data.TerminalVelocity)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, _data.TerminalVelocity);
         }
     }
 
-    // if at jump apex, apply a slight speed boost by slightly increasing max speed
-    private void BoostJumpApex()
+    private void ApplyJumpApexBoost()
     {
-        if (_atJumpApex)
+        bool atJumpApex = !_isGrounded && Mathf.Abs(rb.linearVelocity.y) < _data.JumpApexRange;
+
+        if (atJumpApex)
         {
             _currentMaxSpeed = _data.BaseMaxSpeed * _data.JumpApexMultiplier;
         }
@@ -212,12 +190,6 @@ public class PlayerController : MonoBehaviour
         {
             _currentMaxSpeed = _data.BaseMaxSpeed;
         }
-    }
-
-    // used purely for debugging purposes to view the hitbox of the ground detection
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
     }
 
     private void Run()
@@ -237,4 +209,11 @@ public class PlayerController : MonoBehaviour
 
         rb.linearVelocity = new Vector2(_currentVelocityX, rb.linearVelocity.y);
     }
+
+    // used purely for debugging purposes to view the hitbox of the ground detection
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
+    }
+
 }

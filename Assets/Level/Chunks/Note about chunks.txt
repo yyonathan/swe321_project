@@ -1,0 +1,15 @@
+chunk orginization:
+
+we said we'd classify chunks into difficulties. instead of just easy, medium, and hard chunks, i added an extra one: starting chunks
+
+these will appear at the beginning of the game and will be EXTREMELY easy, just to get new players used to the controls a bit.
+
+as for how we will decided generation of difficulties, we should make it completely random. the player could get unlucky and get 3 hard chunks near the beginning. 
+
+to fix this, i think we should introduce chunks in phases:
+- 0 seconds: only starting chunks spawn
+- 25 seconds: introduction of easy chunks: roughly 70% easy chunks and 30% starting chunks
+- 60 seconds: introduction of medium chunks: perhaps 30% medium chunks and 70% easy chunks
+- 120 seconds: introduction of hard chunks: perhaps 20% hard chunks, 50% medium chunks, and 30% easy chunks
+- 160 seconds: 40% hard chunks, 40% medium chunks, and 20% easy chunks
+- 210 seconds: 50% hard chunks, 40% medium chunks, and 10% easy chunks
