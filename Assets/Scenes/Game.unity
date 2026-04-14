@@ -154,7 +154,7 @@ MonoBehaviour:
   _orthographicSize: 5
   _gracePeriod: 5
   _initialAcceleration: 0.3
-  _actualAcceleration: 0.025
+  _actualAcceleration: 0.01
   _endInitialAccelerationSpeed: 1
   _maxSpeed: 3
 --- !u!114 &348754179

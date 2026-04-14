@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
+public class PlayerPhysics : MonoBehaviour
 {
     // components
     public Rigidbody2D rb;
@@ -19,11 +19,13 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _moveInput;
 
-    [Header("Raycasting")]
+    [Header("raycasting")]
     [SerializeField] private Vector2 _boxSize;
     [SerializeField] private float _castDistance;
     [SerializeField] private LayerMask _surfaceLayer;
 
+    // moving platform checks
+    private MovingPlatform _currentPlatform;
 
     // cached values
     private float _currentMaxSpeed;
@@ -32,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private float _jumpBufferCounter;
     private float _coyoteCounter;
     private float _accelDelta, _deccelDelta; // actual acceleration/decceleration force applied to player
-        
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -48,6 +50,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         UpdateGroundedState();
+        ApplyPlatformVelocity();
 
         HandleJump();
         HandleJumpCut();
@@ -55,6 +58,13 @@ public class PlayerController : MonoBehaviour
         ApplyTerminalVelocity();
         ApplyJumpApexBoost();
         Run();
+
+    }
+
+    private void ApplyPlatformVelocity()
+    {
+        if (_currentPlatform == null) return;
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
 
     private void UpdateGroundedState()
@@ -71,17 +81,24 @@ public class PlayerController : MonoBehaviour
             {
                 _isGrounded = true;
                 _coyoteCounter = _data.CoyoteTime;
+
+                // check if standing on a moving platform
+                _currentPlatform = hit.collider.GetComponent<MovingPlatform>();
             }
             else
             {
                 _isGrounded = false;
                 _coyoteCounter -= Time.fixedDeltaTime;
+
+                _currentPlatform = null;
             }
         }
         else
         {
             _isGrounded = false;
             _coyoteCounter -= Time.fixedDeltaTime;
+
+            _currentPlatform = null;
         }
     }
 
@@ -131,6 +148,12 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
         }
+        if (rb.linearVelocity.y > 0)
+        {
+            // divide a bit cuz the jump power u get from a moving platform is too much on its own
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y / 1.5f); 
+        }
+
         rb.AddForce(Vector2.up * _data.BaseJumpForce, ForceMode2D.Impulse);
 
         _jumpQueued = false;
@@ -194,8 +217,10 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
+        float platformVelocityX = _currentPlatform != null ? _currentPlatform.DeltaPosition.x / Time.fixedDeltaTime : 0f;
+
         // desired speed after fully accelerating
-        float targetSpeed = _moveInput.x * _currentMaxSpeed;
+        float targetSpeed = (_moveInput.x * _currentMaxSpeed) + platformVelocityX;
 
         // accounts for fixed deltatime and current max speed to do the accel time equation with proper values
         _accelDelta = _data.AccelAmount * Time.fixedDeltaTime * _currentMaxSpeed;
@@ -215,5 +240,4 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
     }
-
 }
