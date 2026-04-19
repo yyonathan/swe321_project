@@ -13,6 +13,8 @@ public class CameraManager : MonoBehaviour
 
     private float _timer;
     private float _currentSpeed;
+    public float CurrentSpeed => _currentSpeed;
+    public float EndInitialAccelerationSpeed => _endInitialAccelerationSpeed;
 
     private void Awake()
     {

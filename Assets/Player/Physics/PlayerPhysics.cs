@@ -12,6 +12,11 @@ public class PlayerPhysics : MonoBehaviour
     // contains live updated input data from whatever input device the player is using (touch, keyboard, whatever else we decide to implement which likely won't be much)
     [SerializeField] private PlayerInputState _inputState;
 
+    // reference for camera manager for purpose of scaling jump force based on speed
+    [SerializeField] private CameraManager _cameraManager;
+    [SerializeField] private bool _isPlayerTester;
+    private float _scaledJumpForce;
+
     // core state
     private bool _isGrounded;
     private bool _jumpQueued;
@@ -38,17 +43,21 @@ public class PlayerPhysics : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
         _currentMaxSpeed = _data.BaseMaxSpeed;
+        _scaledJumpForce = _data.BaseJumpForce;
     }
 
     // Update is called once per frame
     void Update()
     {
         ReadAllInput();
+
     }
 
     void FixedUpdate()
     {
+        ScaleJumpForce();
         UpdateGroundedState();
         ApplyPlatformVelocity();
 
@@ -58,7 +67,6 @@ public class PlayerPhysics : MonoBehaviour
         ApplyTerminalVelocity();
         ApplyJumpApexBoost();
         Run();
-
     }
 
     private void ApplyPlatformVelocity()
@@ -129,6 +137,19 @@ public class PlayerPhysics : MonoBehaviour
         _inputState.ConsumeFrameInput();
     }
 
+    private void ScaleJumpForce()
+    {
+        // > 1 because we dont want to descale the jump force
+        if (_cameraManager.CurrentSpeed > _cameraManager.EndInitialAccelerationSpeed) 
+        {
+            _scaledJumpForce = _data.BaseJumpForce + (_cameraManager.CurrentSpeed - _cameraManager.EndInitialAccelerationSpeed) * 1.3f;
+
+            // 8 * 1 = 8 + (1 - 1) * 1.5 = 8
+            // 8 * 2 = 8 + (2 - 1) * 1.5 = 9.5
+            // 8 * 3 = 8 + (3 - 1) * 1.5 = 11
+        }
+    }
+
     private void HandleJump()
     {
         if (!_jumpQueued)
@@ -154,7 +175,7 @@ public class PlayerPhysics : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y / 1.5f); 
         }
 
-        rb.AddForce(Vector2.up * _data.BaseJumpForce, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * _scaledJumpForce, ForceMode2D.Impulse);
 
         _jumpQueued = false;
         _jumpCutQueued = false;

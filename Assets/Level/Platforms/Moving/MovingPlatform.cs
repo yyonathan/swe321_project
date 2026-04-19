@@ -19,14 +19,20 @@ public class MovingPlatform : MonoBehaviour
     private Vector2 _posA;
     private Vector2 _posB;
 
+    // used for reading for the chunk border (if an anchor is the highest object in a chunk, adjust the border to the anchor)
+    public float GetMinY() => _anchorA != null && _anchorB != null ? Mathf.Min(_anchorA.position.y, _anchorB.position.y) : transform.position.y;
+    public float GetMaxY() => _anchorA != null && _anchorB != null ? Mathf.Max(_anchorA.position.y, _anchorB.position.y) : transform.position.y;
+
+    // separated for the gizmo to get it to work
+    public float GetMinYLocal() => GetMinY();
+    public float GetMaxYLocal() => GetMaxY();
+
     private Rigidbody2D _rb;
+
+    private bool _initialized = false;
 
     private void Awake()
     {
-        // cache anchor world points to use instead of their local positions
-        _posA = _anchorA.position;
-        _posB = _anchorB.position;
-
         _anchorA.GetComponent<SpriteRenderer>().enabled = false;
         _anchorB.GetComponent<SpriteRenderer>().enabled = false;
 
@@ -35,6 +41,14 @@ public class MovingPlatform : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // cache anchor world points to use instead of their local positions
+        if (!_initialized)
+        {
+            _posA = _anchorA.position;
+            _posB = _anchorB.position;
+            _initialized = true;
+        }
+
         if (_anchorA == null || _anchorB == null) return;
 
         _journeyTimer += Time.fixedDeltaTime;
