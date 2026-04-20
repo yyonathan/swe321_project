@@ -56,7 +56,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Chunk
   _chunkWidth: 4.8
-  _verticalPadding: 0.5
+  _verticalPadding: 0.4
+  _difficulty: 0
 --- !u!1001 &135722852286239035
 PrefabInstance:
   m_ObjectHideFlags: 0

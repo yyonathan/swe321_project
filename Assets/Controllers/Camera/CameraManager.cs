@@ -13,9 +13,13 @@ public class CameraManager : MonoBehaviour
 
     private float _timer;
     private float _currentSpeed;
+    public float CurrentSpeed => _currentSpeed;
+    public float EndInitialAccelerationSpeed => _endInitialAccelerationSpeed;
 
     private void Awake()
     {
+        Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.value;
+
         _cam = GetComponent<Camera>();
         _cam.orthographic = true;
         _cam.orthographicSize = _orthographicSize;

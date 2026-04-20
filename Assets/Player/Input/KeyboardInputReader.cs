@@ -6,6 +6,7 @@ public class KeyboardInputReader : MonoBehaviour
     [SerializeField] private PlayerInputState _inputState;
     [SerializeField] private InputActionReference _move;
     [SerializeField] private InputActionReference _jump;
+    private bool _wasMovingLastFrame;
 
     private void OnEnable()
     {
@@ -21,7 +22,11 @@ public class KeyboardInputReader : MonoBehaviour
 
     private void Update()
     {
-        _inputState.SetMove(_move.action.ReadValue<Vector2>());
+        Vector2 move = _move.action.ReadValue<Vector2>();
+        if (move != Vector2.zero || _wasMovingLastFrame)
+            _inputState.SetMove(move);
+        _wasMovingLastFrame = move != Vector2.zero;
+
         _inputState.SetSupportsJumpCut(true);
 
         if (_jump.action.WasPressedThisFrame())

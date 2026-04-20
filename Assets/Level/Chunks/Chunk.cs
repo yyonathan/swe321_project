@@ -4,8 +4,9 @@ using UnityEngine;
 public class Chunk : MonoBehaviour
 {
     [SerializeField] private float _chunkWidth = 4.8f;
-    [SerializeField] private float _verticalPadding = 0.5f;
+    [SerializeField] private float _verticalPadding;
     [SerializeField] private Difficulty _difficulty = Difficulty.Starting;
+    [SerializeField] private bool _canRepeat = true;
 
     private float _lowerBorderOffset;
     private float _upperBorderOffset;
@@ -13,9 +14,12 @@ public class Chunk : MonoBehaviour
     public float LowerTransitionBorder => transform.position.y + _lowerBorderOffset;
     public float UpperTransitionBorder => transform.position.y + _upperBorderOffset;
     public Difficulty ChunkDifficulty => _difficulty;
+    public bool CanRepeat => _canRepeat;
 
     private void Awake()
     {
+        _verticalPadding = 0.4f;
+
         if (transform.childCount == 0) return;
 
         float minY = float.MaxValue;
@@ -23,6 +27,17 @@ public class Chunk : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
         {
+            // if an anchor is the highest object in a chunk, adjust the border to the anchor
+            Transform child = transform.GetChild(i);
+            MovingPlatform mp = child.GetComponent<MovingPlatform>();
+
+            if (mp != null)
+            {
+                if (mp.GetMinY() < minY) minY = mp.GetMinY();
+                if (mp.GetMaxY() > maxY) maxY = mp.GetMaxY();
+                continue;
+            }
+
             Collider2D col = transform.GetChild(i).GetComponent<Collider2D>();
             if (col == null) continue;
 
@@ -48,6 +63,16 @@ public class Chunk : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
         {
+            Transform child = transform.GetChild(i);
+            MovingPlatform mp = child.GetComponent<MovingPlatform>();
+
+            if (mp != null)
+            {
+                if (mp.GetMinYLocal() < minY) minY = mp.GetMinYLocal();
+                if (mp.GetMaxYLocal() > maxY) maxY = mp.GetMaxYLocal();
+                continue;
+            }
+
             Collider2D col = transform.GetChild(i).GetComponent<Collider2D>();
             if (col == null) continue;
 

@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class PlayerPhysics : MonoBehaviour
 {
     // components
     public Rigidbody2D rb;
@@ -12,6 +13,11 @@ public class PlayerController : MonoBehaviour
     // contains live updated input data from whatever input device the player is using (touch, keyboard, whatever else we decide to implement which likely won't be much)
     [SerializeField] private PlayerInputState _inputState;
 
+    // reference for camera manager for purpose of scaling jump force based on speed
+    [SerializeField] private CameraManager _cameraManager;
+    [SerializeField] private bool _isPlayerTester;
+    private float _scaledJumpForce;
+
     // core state
     private bool _isGrounded;
     private bool _jumpQueued;
@@ -19,11 +25,13 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 _moveInput;
 
-    [Header("Raycasting")]
+    [Header("raycasting")]
     [SerializeField] private Vector2 _boxSize;
     [SerializeField] private float _castDistance;
     [SerializeField] private LayerMask _surfaceLayer;
 
+    // moving platform checks
+    private MovingPlatform _currentPlatform;
 
     // cached values
     private float _currentMaxSpeed;
@@ -32,22 +40,27 @@ public class PlayerController : MonoBehaviour
     private float _jumpBufferCounter;
     private float _coyoteCounter;
     private float _accelDelta, _deccelDelta; // actual acceleration/decceleration force applied to player
-        
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
         _currentMaxSpeed = _data.BaseMaxSpeed;
+        _scaledJumpForce = _data.BaseJumpForce;
     }
 
     // Update is called once per frame
     void Update()
     {
         ReadAllInput();
+
     }
 
     void FixedUpdate()
     {
+        ScaleJumpForce();
         UpdateGroundedState();
+        ApplyPlatformVelocity();
 
         HandleJump();
         HandleJumpCut();
@@ -55,6 +68,13 @@ public class PlayerController : MonoBehaviour
         ApplyTerminalVelocity();
         ApplyJumpApexBoost();
         Run();
+        _inputState.ConsumeFrameInput();
+    }
+
+    private void ApplyPlatformVelocity()
+    {
+        if (_currentPlatform == null) return;
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
 
     private void UpdateGroundedState()
@@ -71,17 +91,24 @@ public class PlayerController : MonoBehaviour
             {
                 _isGrounded = true;
                 _coyoteCounter = _data.CoyoteTime;
+
+                // check if standing on a moving platform
+                _currentPlatform = hit.collider.GetComponent<MovingPlatform>();
             }
             else
             {
                 _isGrounded = false;
                 _coyoteCounter -= Time.fixedDeltaTime;
+
+                _currentPlatform = null;
             }
         }
         else
         {
             _isGrounded = false;
             _coyoteCounter -= Time.fixedDeltaTime;
+
+            _currentPlatform = null;
         }
     }
 
@@ -108,8 +135,21 @@ public class PlayerController : MonoBehaviour
         {
             _jumpCutQueued = true;
         }
+    }
 
-        _inputState.ConsumeFrameInput();
+    private void ScaleJumpForce()
+    {
+        if (SceneManager.GetActiveScene().name != "Game") return;
+
+        // > 1 because we dont want to descale the jump force
+        if (_cameraManager.CurrentSpeed > _cameraManager.EndInitialAccelerationSpeed) 
+        {
+            _scaledJumpForce = _data.BaseJumpForce + (_cameraManager.CurrentSpeed - _cameraManager.EndInitialAccelerationSpeed) * 1.3f;
+
+            // 8 * 1 = 8 + (1 - 1) * 1.5 = 8
+            // 8 * 2 = 8 + (2 - 1) * 1.5 = 9.5
+            // 8 * 3 = 8 + (3 - 1) * 1.5 = 11
+        }
     }
 
     private void HandleJump()
@@ -131,7 +171,13 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
         }
-        rb.AddForce(Vector2.up * _data.BaseJumpForce, ForceMode2D.Impulse);
+        if (rb.linearVelocity.y > 0)
+        {
+            // divide a bit cuz the jump power u get from a moving platform is too much on its own
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y / 1.5f); 
+        }
+
+        rb.AddForce(Vector2.up * _scaledJumpForce, ForceMode2D.Impulse);
 
         _jumpQueued = false;
         _jumpCutQueued = false;
@@ -194,8 +240,10 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
+        float platformVelocityX = _currentPlatform != null ? _currentPlatform.DeltaPosition.x / Time.fixedDeltaTime : 0f;
+
         // desired speed after fully accelerating
-        float targetSpeed = _moveInput.x * _currentMaxSpeed;
+        float targetSpeed = (_moveInput.x * _currentMaxSpeed) + platformVelocityX;
 
         // accounts for fixed deltatime and current max speed to do the accel time equation with proper values
         _accelDelta = _data.AccelAmount * Time.fixedDeltaTime * _currentMaxSpeed;
@@ -215,5 +263,4 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
     }
-
 }

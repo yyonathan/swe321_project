@@ -197,6 +197,8 @@ MonoBehaviour:
   rb: {fileID: 1740588939866402206}
   _data: {fileID: 11400000, guid: a30e63e6650cbad47aaff1b7edb702b1, type: 2}
   _inputState: {fileID: 411579306318012061}
+  _cameraManager: {fileID: 0}
+  _isPlayerTester: 0
   _boxSize: {x: 0.29, y: 0.09}
   _castDistance: 0.15
   _surfaceLayer:
