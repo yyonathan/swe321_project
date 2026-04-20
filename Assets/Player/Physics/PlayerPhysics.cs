@@ -67,6 +67,7 @@ public class PlayerPhysics : MonoBehaviour
         ApplyTerminalVelocity();
         ApplyJumpApexBoost();
         Run();
+        _inputState.ConsumeFrameInput();
     }
 
     private void ApplyPlatformVelocity()
@@ -133,8 +134,6 @@ public class PlayerPhysics : MonoBehaviour
         {
             _jumpCutQueued = true;
         }
-
-        _inputState.ConsumeFrameInput();
     }
 
     private void ScaleJumpForce()
