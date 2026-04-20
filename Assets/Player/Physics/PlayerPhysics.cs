@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerPhysics : MonoBehaviour
 {
@@ -138,6 +139,8 @@ public class PlayerPhysics : MonoBehaviour
 
     private void ScaleJumpForce()
     {
+        if (SceneManager.GetActiveScene().name != "Game") return;
+
         // > 1 because we dont want to descale the jump force
         if (_cameraManager.CurrentSpeed > _cameraManager.EndInitialAccelerationSpeed) 
         {

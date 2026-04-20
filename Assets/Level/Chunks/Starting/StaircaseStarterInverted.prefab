@@ -57,6 +57,7 @@ MonoBehaviour:
   _chunkWidth: 4.8
   _verticalPadding: 0.4
   _difficulty: 0
+  _canRepeat: 0
 --- !u!1001 &1531264982707075482
 PrefabInstance:
   m_ObjectHideFlags: 0

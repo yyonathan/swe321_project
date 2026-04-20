@@ -8,6 +8,7 @@ public class MovingPlatform : MonoBehaviour
 
     [Header("movement")]
     [SerializeField] private float _travelTime = 0.5f;
+    [SerializeField][Range(0f, 1f)] private float _startProgress = 0f;
 
     private float _journeyTimer = 0f;
     private bool _movingToB = true;
@@ -37,6 +38,8 @@ public class MovingPlatform : MonoBehaviour
         _anchorB.GetComponent<SpriteRenderer>().enabled = false;
 
         _rb = GetComponent<Rigidbody2D>();
+
+        _journeyTimer = _startProgress * _travelTime;
     }
 
     private void FixedUpdate()

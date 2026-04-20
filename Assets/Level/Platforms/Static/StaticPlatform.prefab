@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.4056604, g: 0.32775393, b: 0.29659134, a: 1}
+  m_Color: {r: 0.6698113, g: 0.36966, b: 0.2432805, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -151,4 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf9b4bd4b218704f9e88811aac277ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SharedBehavior
-  _lockedScale: {x: 1.2, y: 0.2, z: 1}
+  _lockedX: 1.2
+  _lockedY: 0.2
+  _lockX: 0
+  _lockY: 1

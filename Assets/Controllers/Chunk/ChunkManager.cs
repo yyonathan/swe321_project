@@ -22,6 +22,10 @@ public class ChunkManager : MonoBehaviour
     private float _gameTimer;
     private float _nextSpawnY;
     private List<Chunk> _activeChunks = new();
+    private GameObject _lastSpawnedPrefab;
+
+    // max attempts to find a non-repeating chunk before giving up and allowing the repeat
+    private const int MaxRerollAttempts = 10;
 
     private void Start()
     {
@@ -94,6 +98,26 @@ public class ChunkManager : MonoBehaviour
         int total = phase.StartingWeight + phase.EasyWeight + phase.MediumWeight + phase.HardWeight;
         if (total == 0) return GetRandom(_startingChunks);
 
+        // attempt to find a valid prefab, rerolling if we land on a non-repeatable chunk that was just spawned
+        for (int attempt = 0; attempt < MaxRerollAttempts; attempt++)
+        {
+            GameObject candidate = RollPrefab(phase, total);
+            if (candidate == null) continue;
+
+            // check if this prefab is non-repeatable and was the last one spawned
+            Chunk candidateChunk = candidate.GetComponent<Chunk>();
+            bool isRepeatViolation = candidateChunk != null && !candidateChunk.CanRepeat && candidate == _lastSpawnedPrefab;
+
+            if (!isRepeatViolation)
+                return candidate;
+        }
+
+        // fallback: max attempts exceeded, just spawn whatever (avoids infinite loop when only one non-repeatable chunk exists in tier)
+        return RollPrefab(phase, total);
+    }
+
+    private GameObject RollPrefab(DifficultyPhase phase, int total)
+    {
         int roll = Random.Range(0, total);
         int cumulative = 0;
 
