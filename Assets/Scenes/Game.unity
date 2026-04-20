@@ -313,7 +313,12 @@ MonoBehaviour:
   - {fileID: 7847026078804844594, guid: 9d83b46fb5240034e929923c12378d02, type: 3}
   _easyChunks:
   - {fileID: 4541083320227361756, guid: 55c7f0a8544ae9049b2f200ba044843a, type: 3}
-  _mediumChunks: []
+  - {fileID: 4541083320227361756, guid: 4f9cd1c99d0a50d46ae4f7bec224abe9, type: 3}
+  - {fileID: 4541083320227361756, guid: 4d7695a23c7b0244598761062ece323c, type: 3}
+  _mediumChunks:
+  - {fileID: 4541083320227361756, guid: f537c2296b674c4419d2e9528a6c0575, type: 3}
+  - {fileID: 4541083320227361756, guid: 11eba8db08a9d19469b7e6a81272ae72, type: 3}
+  - {fileID: 4541083320227361756, guid: ad4bcfa2c77c7c947aaeb856e8779608, type: 3}
   _hardChunks:
   - {fileID: 3109183097824996593, guid: 88a20f105db8bf548b48b32640c88140, type: 3}
   _initialSpawnY: -1.2
@@ -324,6 +329,31 @@ MonoBehaviour:
     EasyWeight: 0
     MediumWeight: 0
     HardWeight: 0
+  - StartTime: 25
+    StartingWeight: 1
+    EasyWeight: 2
+    MediumWeight: 0
+    HardWeight: 0
+  - StartTime: 45
+    StartingWeight: 1
+    EasyWeight: 2
+    MediumWeight: 1
+    HardWeight: 0
+  - StartTime: 70
+    StartingWeight: 1
+    EasyWeight: 2
+    MediumWeight: 3
+    HardWeight: 0
+  - StartTime: 90
+    StartingWeight: 1
+    EasyWeight: 3
+    MediumWeight: 4
+    HardWeight: 1
+  - StartTime: 115
+    StartingWeight: 1
+    EasyWeight: 4
+    MediumWeight: 6
+    HardWeight: 4
 --- !u!4 &637216813
 Transform:
   m_ObjectHideFlags: 0

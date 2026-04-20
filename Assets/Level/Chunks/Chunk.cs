@@ -6,6 +6,7 @@ public class Chunk : MonoBehaviour
     [SerializeField] private float _chunkWidth = 4.8f;
     [SerializeField] private float _verticalPadding;
     [SerializeField] private Difficulty _difficulty = Difficulty.Starting;
+    [SerializeField] private bool _canRepeat = true;
 
     private float _lowerBorderOffset;
     private float _upperBorderOffset;
@@ -13,6 +14,7 @@ public class Chunk : MonoBehaviour
     public float LowerTransitionBorder => transform.position.y + _lowerBorderOffset;
     public float UpperTransitionBorder => transform.position.y + _upperBorderOffset;
     public Difficulty ChunkDifficulty => _difficulty;
+    public bool CanRepeat => _canRepeat;
 
     private void Awake()
     {
