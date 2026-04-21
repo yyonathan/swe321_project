@@ -287,7 +287,6 @@ GameObject:
   - component: {fileID: 454624781}
   - component: {fileID: 454624780}
   - component: {fileID: 454624779}
-  - component: {fileID: 454624782}
   m_Layer: 5
   m_Name: Right Button
   m_TagString: Untagged
@@ -396,19 +395,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454624777}
   m_CullTransparentMesh: 1
---- !u!114 &454624782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 454624777}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d9914e4a4a271f49b19fb318ff15dd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RightButtonHandler
-  _inputState: {fileID: 857096345}
 --- !u!1 &637216811
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,7 +890,6 @@ GameObject:
   - component: {fileID: 1662067638}
   - component: {fileID: 1662067637}
   - component: {fileID: 1662067636}
-  - component: {fileID: 1662067635}
   m_Layer: 5
   m_Name: Left Button
   m_TagString: Untagged
@@ -931,19 +916,6 @@ RectTransform:
   m_AnchoredPosition: {x: 150, y: 110}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1662067635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662067633}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d074718c5a0a2444bb5e0ba90f265de8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  _inputState: {fileID: 857096345}
 --- !u!114 &1662067636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1038,7 +1010,6 @@ GameObject:
   - component: {fileID: 1813538574}
   - component: {fileID: 1813538573}
   - component: {fileID: 1813538572}
-  - component: {fileID: 1813538575}
   m_Layer: 5
   m_Name: Jump Button
   m_TagString: Untagged
@@ -1147,19 +1118,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1813538570}
   m_CullTransparentMesh: 1
---- !u!114 &1813538575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813538570}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f34540639d661ae42b7e02412346336b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JumpButtonHandler
-  _inputState: {fileID: 857096345}
 --- !u!1 &2122242412
 GameObject:
   m_ObjectHideFlags: 0

@@ -86,6 +86,7 @@ public class ChunkManager : MonoBehaviour
         instance.transform.position = new Vector3(0f, _nextSpawnY - chunk.LowerTransitionBorder, 0f);
         _nextSpawnY = chunk.UpperTransitionBorder;
 
+        _lastSpawnedPrefab = prefab;
         _activeChunks.Add(chunk);
     }
 

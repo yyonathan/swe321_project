@@ -60,7 +60,6 @@ public class PlayerPhysics : MonoBehaviour
     {
         ScaleJumpForce();
         UpdateGroundedState();
-        ApplyPlatformVelocity();
 
         HandleJump();
         HandleJumpCut();
@@ -69,12 +68,6 @@ public class PlayerPhysics : MonoBehaviour
         ApplyJumpApexBoost();
         Run();
         _inputState.ConsumeFrameInput();
-    }
-
-    private void ApplyPlatformVelocity()
-    {
-        if (_currentPlatform == null) return;
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
 
     private void UpdateGroundedState()

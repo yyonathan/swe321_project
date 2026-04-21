@@ -14,6 +14,7 @@ public class OnScreenControls : MonoBehaviour
 
     // tracks which zone each finger was in last frame so we only fire jump once per entry
     private Dictionary<int, Zone> _previousZones = new();
+    private bool _hadDirectionalTouchLastFrame;
 
     private enum Zone { None, Left, Right, Jump }
 
@@ -77,7 +78,14 @@ public class OnScreenControls : MonoBehaviour
         if (hasLeft && !hasRight) moveX = -1f;
         else if (hasRight && !hasLeft) moveX = 1f;
 
-        _inputState.SetMove(new Vector2(moveX, 0f));
+        bool wasDirectional = _hadDirectionalTouchLastFrame;
+        _hadDirectionalTouchLastFrame = hasLeft || hasRight;
+
+        if (hasLeft || hasRight)
+            _inputState.SetMove(new Vector2(moveX, 0f));
+        else if (wasDirectional && !hasLeft && !hasRight)
+            _inputState.SetMove(Vector2.zero);
+
         _inputState.SetSupportsJumpCut(true);
 
         if (jumpThisFrame)
