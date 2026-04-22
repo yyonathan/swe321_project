@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3994310414951439678}
   - component: {fileID: -4634487248076668218}
   - component: {fileID: 6320446124922805536}
+  - component: {fileID: -8003608951225251364}
   m_Layer: 6
   m_Name: DisappearingPlatform
   m_TagString: Untagged
@@ -62,7 +63,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -191,4 +192,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf9b4bd4b218704f9e88811aac277ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SharedBehavior
-  _lockedScale: {x: 1.2, y: 0.2, z: 1}
+  _lockedX: 1.2
+  _lockedY: 0.2
+  _lockX: 0
+  _lockY: 1
+--- !u!114 &-8003608951225251364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316119355355233091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683329d11a57ca1418b250d8e512d65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformAppearance
+  _darkOffset: 0.25
+  _brightOffset: 0.2

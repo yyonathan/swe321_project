@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1675078947255493382}
   - component: {fileID: -8585868158601323078}
   - component: {fileID: -2656900562368605192}
+  - component: {fileID: 6098497957722212694}
   m_Layer: 6
   m_Name: StandardPlatform
   m_TagString: Untagged
@@ -61,7 +62,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -175,3 +176,17 @@ MonoBehaviour:
   _lockedY: 0.2
   _lockX: 0
   _lockY: 1
+--- !u!114 &6098497957722212694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7516930733600085081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683329d11a57ca1418b250d8e512d65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformAppearance
+  _darkOffset: 0.1
+  _brightOffset: 0.1
