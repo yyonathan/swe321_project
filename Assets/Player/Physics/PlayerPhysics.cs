@@ -256,4 +256,6 @@ public class PlayerPhysics : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
     }
+
 }
+
