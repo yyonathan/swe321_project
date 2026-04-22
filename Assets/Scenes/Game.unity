@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 348754180}
   - component: {fileID: 348754179}
   - component: {fileID: 348754178}
+  - component: {fileID: 348754183}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -275,6 +276,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &348754183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348754177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1558f8cd589ca6f4aa6be4330664cf5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformShaderController
+  _cameraManager: {fileID: 348754178}
+  _platformMaterial: {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}
+  _baseSpeed: 1.2
+  _speedMultiplier: 0.5
 --- !u!1 &454624777
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,7 +886,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

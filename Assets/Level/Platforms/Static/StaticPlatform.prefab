@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5331331523960729552}
   - component: {fileID: 5372907624979906713}
   - component: {fileID: -5189183092903238501}
-  - component: {fileID: 7210206245721683309}
+  - component: {fileID: -4961245055268637586}
   m_Layer: 6
   m_Name: StaticPlatform
   m_TagString: Untagged
@@ -156,7 +156,7 @@ MonoBehaviour:
   _lockedY: 0.2
   _lockX: 0
   _lockY: 1
---- !u!114 &7210206245721683309
+--- !u!114 &-4961245055268637586
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,6 +165,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1378767348286480015}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1558f8cd589ca6f4aa6be4330664cf5c, type: 3}
+  m_Script: {fileID: 11500000, guid: 683329d11a57ca1418b250d8e512d65f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MaterialRefresh
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformAppearance

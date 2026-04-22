@@ -7,6 +7,7 @@ Shader "Custom/PlatformShard"
         _Speed ("Animation Speed", Float) = 1.2
         _Scale ("Pattern Scale", Float) = 1.5
         _AspectRatio ("Aspect Ratio", Float) = 10.0
+        _Seed ("Seed", Float) = 0.0
     }
 
     SubShader
@@ -50,6 +51,7 @@ Shader "Custom/PlatformShard"
                 float _Speed;
                 float _Scale;
                 float _AspectRatio;
+                float _Seed;
             CBUFFER_END
 
             Varyings vert(Attributes IN)
@@ -68,7 +70,8 @@ Shader "Custom/PlatformShard"
 
             float triangleMask(float2 uv, int index, float time)
             {
-                float fi = float(index);
+                // offset seed by per-platform _Seed so each platform has unique pattern
+                float fi = float(index) + _Seed;
 
                 float2 center = float2(
                     rand(float2(fi, 0.1)) * _AspectRatio,
@@ -95,8 +98,6 @@ Shader "Custom/PlatformShard"
             half4 frag(Varyings IN) : SV_Target
             {
                 float time = _Time.y * _Speed;
-
-                // correct uv for aspect ratio so pattern isn't stretched on wide platforms
                 float2 uv = float2(IN.uv.x * _AspectRatio, IN.uv.y);
 
                 float totalBrightness = 0.0;
@@ -104,7 +105,7 @@ Shader "Custom/PlatformShard"
 
                 for (int i = 0; i < numTriangles; i++)
                 {
-                    float fi = float(i);
+                    float fi = float(i) + _Seed;
 
                     float phase = rand(float2(fi, 0.9)) * 6.2831;
                     float rate = rand(float2(fi, 0.7)) * 1.5 + 0.5;
