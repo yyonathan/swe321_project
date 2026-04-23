@@ -10,9 +10,12 @@ public class PlatformAppearance : MonoBehaviour
     [SerializeField] private float _darkOffset = 0.15f;  // how much darker the base color is
     [SerializeField] private float _brightOffset = 0.1f; // how much brighter the layer color is
 
+    [SerializeField] private Material _platformMaterial;
+
     private void Awake()
     {
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.material = _platformMaterial;
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         sr.GetPropertyBlock(block);
 

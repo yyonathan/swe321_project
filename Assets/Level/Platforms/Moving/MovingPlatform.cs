@@ -44,11 +44,11 @@ public class MovingPlatform : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // cache anchor world points to use instead of their local positions
         if (!_initialized)
         {
             _posA = _anchorA.position;
             _posB = _anchorB.position;
+            _previousPosition = _rb.position;
             _initialized = true;
         }
 
@@ -60,8 +60,8 @@ public class MovingPlatform : MonoBehaviour
 
         Vector2 targetPos = _movingToB ? Vector2.Lerp(_posA, _posB, smoothT) : Vector2.Lerp(_posB, _posA, smoothT);
 
-        // capture how much we're about to move so the player can inherit it
-        DeltaPosition = targetPos - (Vector2)transform.position;
+        DeltaPosition = _rb.position - _previousPosition;
+        _previousPosition = _rb.position;
         _rb.MovePosition(targetPos);
 
         if (t >= 1f)

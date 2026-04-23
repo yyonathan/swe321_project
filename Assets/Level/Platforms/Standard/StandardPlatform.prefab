@@ -62,7 +62,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -188,5 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683329d11a57ca1418b250d8e512d65f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformAppearance
-  _darkOffset: 0.2
-  _brightOffset: 0.1
+  _darkOffset: 0.15
+  _brightOffset: 0.2
+  _platformMaterial: {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}
