@@ -60,8 +60,7 @@ public class MovingPlatform : MonoBehaviour
 
         Vector2 targetPos = _movingToB ? Vector2.Lerp(_posA, _posB, smoothT) : Vector2.Lerp(_posB, _posA, smoothT);
 
-        DeltaPosition = _rb.position - _previousPosition;
-        _previousPosition = _rb.position;
+        DeltaPosition = targetPos - _rb.position;
         _rb.MovePosition(targetPos);
 
         if (t >= 1f)
