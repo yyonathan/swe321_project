@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -8585868158601323078}
   - component: {fileID: -2656900562368605192}
   - component: {fileID: 6098497957722212694}
+  - component: {fileID: -2717454758460828313}
   m_Layer: 6
   m_Name: StandardPlatform
   m_TagString: Untagged
@@ -191,3 +192,18 @@ MonoBehaviour:
   _darkOffset: 0.15
   _brightOffset: 0.2
   _platformMaterial: {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}
+--- !u!114 &-2717454758460828313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7516930733600085081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659a5261d10217e4e98f90aa82c52eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformShadow
+  _shadowLength: 3
+  _shadowOffset: 0
+  _shadowMaterial: {fileID: 2100000, guid: 4a9d87bbc2ca8424985939008421c575, type: 2}

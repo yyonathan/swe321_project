@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -4634487248076668218}
   - component: {fileID: 6320446124922805536}
   - component: {fileID: -8003608951225251364}
+  - component: {fileID: -3436154934800800717}
   m_Layer: 6
   m_Name: DisappearingPlatform
   m_TagString: Untagged
@@ -211,3 +212,19 @@ MonoBehaviour:
   _darkOffset: 0.25
   _brightOffset: 0.2
   _platformMaterial: {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}
+--- !u!114 &-3436154934800800717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316119355355233091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659a5261d10217e4e98f90aa82c52eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformShadow
+  _lightSource: {fileID: 0}
+  _shadowLength: 3
+  _shadowOffset: 0
+  _shadowMaterial: {fileID: 0}
