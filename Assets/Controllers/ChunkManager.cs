@@ -30,11 +30,7 @@ public class ChunkManager : MonoBehaviour
     private void Start()
     {
         if (_cam == null) _cam = Camera.main;
-        _nextSpawnY = _initialSpawnY;
-
-        float camTop = _cam.transform.position.y + _cam.orthographicSize;
-        while (_nextSpawnY < camTop + _spawnBuffer)
-            SpawnNextChunk();
+        InitialSpawn();
     }
 
     private void Update()
@@ -60,6 +56,32 @@ public class ChunkManager : MonoBehaviour
                 _activeChunks.RemoveAt(i);
             }
         }
+    }
+
+    public void Reset()
+    {
+        // destroy all active chunks
+        for (int i = _activeChunks.Count - 1; i >= 0; i--)
+        {
+            if (_activeChunks[i] != null)
+                Destroy(_activeChunks[i].gameObject);
+        }
+        _activeChunks.Clear();
+
+        _gameTimer = 0f;
+        _lastSpawnedPrefab = null;
+        _nextSpawnY = _initialSpawnY;
+
+        InitialSpawn();
+    }
+
+    private void InitialSpawn()
+    {
+        _nextSpawnY = _initialSpawnY;
+
+        float camTop = _cam.transform.position.y + _cam.orthographicSize;
+        while (_nextSpawnY < camTop + _spawnBuffer)
+            SpawnNextChunk();
     }
 
     private void SpawnNextChunk()

@@ -13,6 +13,8 @@ public class CameraManager : MonoBehaviour
 
     private float _timer;
     private float _currentSpeed;
+    private Vector3 _startPosition;
+
     public float CurrentSpeed => _currentSpeed;
     public float EndInitialAccelerationSpeed => _endInitialAccelerationSpeed;
 
@@ -27,26 +29,34 @@ public class CameraManager : MonoBehaviour
         _orthographicSize = 5f;
         _timer = 0;
         _currentSpeed = 0;
+
+        _startPosition = transform.position;
     }
 
     private void Update()
     {
         _timer += Time.deltaTime;
-        
+
         if (_currentSpeed > _maxSpeed)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y + _maxSpeed * Time.deltaTime, transform.position.z);
         }
-        else if (_currentSpeed > _endInitialAccelerationSpeed) // acceleration should slow down once it has initially caught up to speed
-
+        else if (_currentSpeed > _endInitialAccelerationSpeed)
         {
             _currentSpeed += _actualAcceleration * Time.deltaTime;
             transform.position = new Vector3(transform.position.x, transform.position.y + _currentSpeed * Time.deltaTime, transform.position.z);
         }
-        else if (_timer > _gracePeriod) // after grace period, camera should accelerate quickly to catch up
+        else if (_timer > _gracePeriod)
         {
             _currentSpeed += _initialAcceleration * Time.deltaTime;
             transform.position = new Vector3(transform.position.x, transform.position.y + _currentSpeed * Time.deltaTime, transform.position.z);
         }
+    }
+
+    public void Reset()
+    {
+        transform.position = _startPosition;
+        _timer = 0f;
+        _currentSpeed = 0f;
     }
 }
