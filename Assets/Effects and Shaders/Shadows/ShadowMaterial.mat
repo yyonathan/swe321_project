@@ -26,9 +26,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _BlurEnd: 1
-    - _BlurStart: 0.3
-    - _EdgeBlur: 0.1
+    - _BlurEnd: 0.75
+    - _BlurStart: 0
+    - _EdgeBlur: 0
     m_Colors:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 0.4}
   m_BuildTextureStacks: []

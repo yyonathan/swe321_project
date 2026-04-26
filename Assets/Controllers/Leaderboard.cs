@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEditor.ShaderData;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class Leaderboard : MonoBehaviour
