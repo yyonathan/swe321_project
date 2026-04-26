@@ -7,6 +7,8 @@ public class TitleScreen : MonoBehaviour
     [SerializeField] private GameObject HUD;
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private PlayerDeath _playerDeath;
+    [SerializeField] private CameraManager _cameraManager;
+    [SerializeField] private ChunkManager _chunkManager;
 
     private Vector3 _playerStartPos;
 
@@ -34,6 +36,9 @@ public class TitleScreen : MonoBehaviour
 
     public void ReturnToMenu()
     {
+        _cameraManager.Reset();
+        _chunkManager.Reset();
+
         player.transform.position = _playerStartPos;
         _playerDeath.ResetDeath();
 
