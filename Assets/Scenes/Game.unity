@@ -241,6 +241,7 @@ GameObject:
   - component: {fileID: 348754180}
   - component: {fileID: 348754179}
   - component: {fileID: 348754178}
+  - component: {fileID: 348754183}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -263,9 +264,9 @@ MonoBehaviour:
   _orthographicSize: 5
   _gracePeriod: 5
   _initialAcceleration: 0.3
-  _actualAcceleration: 0.0188
+  _actualAcceleration: 0.016
   _endInitialAccelerationSpeed: 1
-  _maxSpeed: 5
+  _maxSpeed: 4
 --- !u!114 &348754179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,7 +329,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.6, g: 0.7254902, b: 0.8117647, a: 1}
+  m_BackGroundColor: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -381,7 +382,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1669107459}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &372339721

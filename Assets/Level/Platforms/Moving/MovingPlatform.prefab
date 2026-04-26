@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 59904607712737100}
   - component: {fileID: 8465940859579829149}
   - component: {fileID: 6835749362847183700}
+  - component: {fileID: -8429292242556933073}
   m_Layer: 6
   m_Name: MovingPlatform
   m_TagString: Untagged
@@ -247,7 +248,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -271,7 +272,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.745283, g: 0.4745906, b: 0.62738377, a: 1}
+  m_Color: {r: 0.6226415, g: 0.3495016, b: 0.503885, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -376,6 +377,7 @@ MonoBehaviour:
   _anchorA: {fileID: 1614526107451335227}
   _anchorB: {fileID: 3052963540897652866}
   _travelTime: 1
+  _startProgress: 0
 --- !u!50 &6835749362847183700
 Rigidbody2D:
   serializedVersion: 5
@@ -403,3 +405,18 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-8429292242556933073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7120233648479726587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683329d11a57ca1418b250d8e512d65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformAppearance
+  _darkOffset: 0.2
+  _brightOffset: 0.13
+  _platformMaterial: {fileID: 2100000, guid: 6492be0f8f793524183f824274fed6f1, type: 2}

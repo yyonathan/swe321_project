@@ -64,18 +64,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: StaticPlatform
       objectReference: {fileID: 0}
-    - target: {fileID: 5331331523960729552, guid: 73010bc72ad50ab458436514000029c8, type: 3}
-      propertyPath: m_Color.b
-      value: 0.3469651
-      objectReference: {fileID: 0}
-    - target: {fileID: 5331331523960729552, guid: 73010bc72ad50ab458436514000029c8, type: 3}
-      propertyPath: m_Color.g
-      value: 0.43620643
-      objectReference: {fileID: 0}
-    - target: {fileID: 5331331523960729552, guid: 73010bc72ad50ab458436514000029c8, type: 3}
-      propertyPath: m_Color.r
-      value: 0.6509434
-      objectReference: {fileID: 0}
     - target: {fileID: 7056382480419648476, guid: 73010bc72ad50ab458436514000029c8, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.7999601

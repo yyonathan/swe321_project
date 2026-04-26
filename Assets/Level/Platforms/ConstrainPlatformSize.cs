@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class SharedBehavior : MonoBehaviour
+public class ConstrainPlatformSize : MonoBehaviour
 {
     // lockedx and lockedy keeps the platforms the same size, if enabled
     // i turned off lockx because i want variable length, but not variable thickness (height)

@@ -66,7 +66,9 @@ public class PlayerPhysics : MonoBehaviour
         ApplyFallGravity();
         ApplyTerminalVelocity();
         ApplyJumpApexBoost();
+
         Run();
+
         _inputState.ConsumeFrameInput();
     }
 
@@ -80,7 +82,7 @@ public class PlayerPhysics : MonoBehaviour
             float surfaceTop = hit.collider.bounds.max.y;
             float playerBottom = GetComponent<Collider2D>().bounds.min.y;
 
-            if (playerBottom >= surfaceTop - 0.05f)
+            if (playerBottom >= surfaceTop - 0.01f /*&& rb.linearVelocity.y <= 0f*/)
             {
                 _isGrounded = true;
                 _coyoteCounter = _data.CoyoteTime;
