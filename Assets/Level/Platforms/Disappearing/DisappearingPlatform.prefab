@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.31599444, g: 0.46226418, b: 0.3030883, a: 1}
+  m_Color: {r: 0.21568628, g: 0.69803923, b: 0.22846161, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -224,7 +224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659a5261d10217e4e98f90aa82c52eee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformShadow
-  _lightSource: {fileID: 0}
   _shadowLength: 3
   _shadowOffset: 0
-  _shadowMaterial: {fileID: 0}
+  _shadowMaterial: {fileID: 2100000, guid: 4a9d87bbc2ca8424985939008421c575, type: 2}

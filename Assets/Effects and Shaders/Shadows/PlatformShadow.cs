@@ -52,8 +52,8 @@ public class PlatformShadow : MonoBehaviour
     {
         // get platform size in local space
         Bounds localBounds = _spriteRenderer.sprite.bounds;
-        float halfWidth = localBounds.extents.x * transform.localScale.x;
-        float halfHeight = localBounds.extents.y * transform.localScale.y;
+        float halfWidth = _spriteRenderer.bounds.extents.x / transform.lossyScale.x;
+        float halfHeight = _spriteRenderer.bounds.extents.y / transform.lossyScale.y;
         float bottomY = -halfHeight - _shadowOffset;
 
         // four vertices in local space
