@@ -44,6 +44,9 @@ TagManager:
   - name: Background
     uniqueID: 2572482065
     locked: 0
+  - name: Shadow
+    uniqueID: 544349993
+    locked: 0
   - name: Surface
     uniqueID: 801623427
     locked: 0

@@ -35,8 +35,8 @@ public class PlatformShadow : MonoBehaviour
 
         // load shadow material from resources
         _meshRenderer.material = _shadowMaterial;
-        _meshRenderer.sortingLayerName = _spriteRenderer.sortingLayerName;
-        _meshRenderer.sortingOrder = _spriteRenderer.sortingOrder - 1;
+        _meshRenderer.sortingLayerName = "Shadow";
+        _meshRenderer.sortingOrder = 0;
 
         _meshFilter = _shadowObject.AddComponent<MeshFilter>();
         _meshFilter.mesh = new Mesh();
