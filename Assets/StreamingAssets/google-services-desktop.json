@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "447652917334",
+    "project_id": "upmaxxing-5205d",
+    "storage_bucket": "upmaxxing-5205d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447652917334:android:0b4549c9c56df0220a4bf7",
+        "android_client_info": {
+          "package_name": "com.yonathan.UPMAXXING"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyy5FeAYoUdZDkgSsoOAG0DQkCLhL5PRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

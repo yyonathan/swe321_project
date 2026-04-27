@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
+  <string name="gcm_defaultSenderId" translatable="false">447652917334</string>
+  <string name="google_storage_bucket" translatable="false">upmaxxing-5205d.firebasestorage.app</string>
+  <string name="project_id" translatable="false">upmaxxing-5205d</string>
+  <string name="google_api_key" translatable="false">AIzaSyAyy5FeAYoUdZDkgSsoOAG0DQkCLhL5PRc</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAyy5FeAYoUdZDkgSsoOAG0DQkCLhL5PRc</string>
+  <string name="google_app_id" translatable="false">1:447652917334:android:0b4549c9c56df0220a4bf7</string>
+</resources>
