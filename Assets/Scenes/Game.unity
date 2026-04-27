@@ -1091,6 +1091,7 @@ MonoBehaviour:
   _playerDeath: {fileID: 1378783016}
   _cameraManager: {fileID: 348754178}
   _chunkManager: {fileID: 637216812}
+  _musicManager: {fileID: 1001098989}
 --- !u!1 &454624777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,6 +1990,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1001098988}
   - component: {fileID: 1001098987}
+  - component: {fileID: 1001098989}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -2108,6 +2110,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1001098989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001098986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c974ad819eea54a4d918cc69149a4cd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicManager
 --- !u!1 &1133126798
 GameObject:
   m_ObjectHideFlags: 0

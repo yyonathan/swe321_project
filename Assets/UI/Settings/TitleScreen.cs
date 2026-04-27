@@ -9,6 +9,7 @@ public class TitleScreen : MonoBehaviour
     [SerializeField] private PlayerDeath _playerDeath;
     [SerializeField] private CameraManager _cameraManager;
     [SerializeField] private ChunkManager _chunkManager;
+    [SerializeField] private MusicManager _musicManager;
 
     private Vector3 _playerStartPos;
 
@@ -31,6 +32,7 @@ public class TitleScreen : MonoBehaviour
         pauseButton.SetActive(true);
 
         Time.timeScale = 1f;
+        _musicManager.StartMusic();
         ScoreManager.Instance.StartRun();
     }
 
@@ -47,5 +49,6 @@ public class TitleScreen : MonoBehaviour
         titleCanvas.SetActive(true);
 
         Time.timeScale = 0f;
+        _musicManager.StopMusic();
     }
 }
