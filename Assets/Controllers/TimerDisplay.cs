@@ -27,6 +27,6 @@ public class ScoreTimer : MonoBehaviour
 
     private void Update()
     {
-        _text.text = $"{ScoreManager.Instance.CurrentScore:F1}s";
+        _text.text = $"{ScoreManager.Instance.CurrentScore:F0}";
     }
 }

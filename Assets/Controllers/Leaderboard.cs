@@ -1,23 +1,18 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-using Firebase.Database;
-using Firebase.Extensions;
+using UnityEngine.Networking;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
+using System.Text;
 
 
 public class Leaderboard : MonoBehaviour
 {
     // Database URL Constant
     private const string DATABSEURL = "https://upmaxxing-5205d-default-rtdb.firebaseio.com/";
+    private const int MAX_ENTRIES = 50;
     private float _pendingScore;
 
     // "subscribing" to the death event
-    void Start()
-    {
-        FetchLeaderboard();
-    }
     private void OnEnable()
     {
         PlayerDeath.OnPlayerDeath += HandleDeath;
@@ -41,98 +36,127 @@ public class Leaderboard : MonoBehaviour
 
     public void Submit(string playerName)
     {
-        SubmitScore(playerName, _pendingScore);
+        StartCoroutine(SubmitScore(playerName, _pendingScore));
     }
 
 
     // this should fetch the entries from Firebase, sorted by score descending
     // i can handle passing the results to the UI for displaying purposes
     // you can change the reeturn type of this if you want it to just return some data structure holding the entries
-
-    private void SubmitScore(string playerName, float score)
+    private IEnumerator SubmitScore(string playerName, float score)
     {
-        // Get firebase Instance
-        var db = FirebaseDatabase.GetInstance(DATABSEURL).RootReference;
-        DatabaseReference playerRef = db.Child("leaderboard").Child(playerName);
+        // first check if player already has an entry
+        string url = DATABSEURL + "leaderboard/" + playerName + ".json";
+        UnityWebRequest getRequest = UnityWebRequest.Get(url);
+        yield return getRequest.SendWebRequest();
 
-
-        playerRef.GetValueAsync().ContinueWithOnMainThread(task =>
+        if (getRequest.result != UnityWebRequest.Result.Success)
         {
-            // if it got the info correctly it wil
-            if (!task.IsCompletedSuccessfully)
-            {
-                Debug.LogError("Failed to check existing score: " + task.Exception);
-                return;
-            }
+            Debug.LogError("Failed to check existing score: " + getRequest.error);
+            yield break;
+        }
 
-            DataSnapshot snapshot = task.Result;
+        string response = getRequest.downloadHandler.text;
 
-            if (!snapshot.Exists)
-            {
-                Debug.Log("No Firebase score yet, submitting... ");
-                SaveScore(playerRef, playerName, score);
-                return;
-            }
-
-            float oldScore = float.Parse(snapshot.Child("score").Value.ToString());
-
-            if (score > oldScore)
-            {
-                Debug.Log("New Best, submitting to firebase :DDDDDD ");
-                SaveScore(playerRef, playerName, score);
-            }
-            else
-            {
-                Debug.Log("Current score is better, not going to submit, you suck");
-            }
-        });
-    }
-
-    private void SaveScore(DatabaseReference playerRef, string playerName, float score)
-    {
-        Dictionary<string, object> entry = new Dictionary<string, object>();
-        entry["name"] = playerName;
-        entry["score"] = score;
-
-        playerRef.SetValueAsync(entry);
-
-        Debug.Log("Submitted the score of: " + playerName + "score is: " + score);
-    }
-
-    public void FetchLeaderboard()
-    {
-        var db = FirebaseDatabase.GetInstance(DATABSEURL).GetReference("leaderboard");
-
-        // Gets the order by score ---- gets whatever amount you want
-        db.OrderByChild("score").LimitToLast(10).GetValueAsync().ContinueWithOnMainThread(task =>
+        // if entry exists, check if new score is better
+        if (response != "null")
         {
-            if (!task.IsCompletedSuccessfully)
+            LeaderboardEntry existing = JsonUtility.FromJson<LeaderboardEntry>(response);
+            if (score <= existing.score)
             {
-                Debug.LogError("Failed to fetch the leaderboard whomp whomp" + task.Exception);
-                return;
+                Debug.Log("Not a new best, not submitting.");
+                yield break;
             }
+        }
 
-            List<LeaderboardInfo> entries = new List<LeaderboardInfo>();
+        // submit new/updated entry
+        string date = System.DateTime.UtcNow.ToString("M/d/yy");
+        LeaderboardEntry entry = new LeaderboardEntry { name = playerName, score = score, date = date };
+        string json = JsonUtility.ToJson(entry);
 
-            foreach (DataSnapshot child in task.Result.Children)
-            {
-                string username = child.Child("name").Value.ToString();
-                float score = float.Parse(child.Child("score").Value.ToString());
+        UnityWebRequest putRequest = UnityWebRequest.Put(url, Encoding.UTF8.GetBytes(json));
+        putRequest.SetRequestHeader("Content-Type", "application/json");
+        yield return putRequest.SendWebRequest();
 
-                entries.Add(new LeaderboardInfo(username, score));
-            }
-
-            entries.Reverse();
-
-            //This will give you access.
-            foreach (LeaderboardInfo entry in entries)
-            {
-                Debug.Log(entry.username + "has a score of: " + entry.score);
-            }
-        });
+        if (putRequest.result == UnityWebRequest.Result.Success)
+            Debug.Log("Score submitted: " + playerName + " - " + score);
+        else
+            Debug.LogError("Failed to submit score: " + putRequest.error);
     }
 
+    public void FetchLeaderboard(System.Action<List<LeaderboardEntry>> onComplete)
+    {
+        StartCoroutine(FetchLeaderboardCoroutine(onComplete));
+    }
+
+    private IEnumerator FetchLeaderboardCoroutine(System.Action<List<LeaderboardEntry>> onComplete)
+    {
+        string url = DATABSEURL + "leaderboard.json?orderBy=\"score\"&limitToLast=" + MAX_ENTRIES;
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Failed to fetch leaderboard: " + request.error);
+            yield break;
+        }
+
+        string json = request.downloadHandler.text;
+        Debug.Log("Raw JSOnN: " + json);
+
+        if (json == "null" || string.IsNullOrEmpty(json))
+        {
+            Debug.Log("No leaderboard entries yett.");
+            yield break;
+        }
+
+        List<LeaderboardEntry> entries = ParseEntries(json);
+        entries.Sort((a, b) => b.score.CompareTo(a.score));
+        onComplete?.Invoke(entries);
+    }
+
+    private List<LeaderboardEntry> ParseEntries(string json)
+    {
+        List<LeaderboardEntry> entries = new List<LeaderboardEntry>();
+
+        // split by top level keys: "},\"" pattern
+        json = json.Substring(1, json.Length - 2); // strip outer {}
+
+        int depth = 0;
+
+        for (int i = 0; i < json.Length; i++)
+        {
+            if (json[i] == '{') depth++;
+            else if (json[i] == '}')
+            {
+                depth--;
+                if (depth == 0)
+                {
+                    // extract just the object {}
+                    int objStart = json.LastIndexOf('{', i);
+                    string entryJson = json.Substring(objStart, i - objStart + 1);
+                    try
+                    {
+                        LeaderboardEntry entry = JsonUtility.FromJson<LeaderboardEntry>(entryJson);
+                        entries.Add(entry);
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        return entries;
+    }
 }
+
+[System.Serializable]
+public struct LeaderboardEntry
+{
+    public string name;
+    public float score;
+    public string date;
+}
+
 public struct LeaderboardInfo
 {
     public string username;

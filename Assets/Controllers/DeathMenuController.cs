@@ -26,7 +26,7 @@ public class DeathMenuController : MonoBehaviour
         _deathCanvas.SetActive(true);
 
         float score = ScoreManager.Instance.CurrentScore;
-        _scoreText.text = $"{score:F2} s";
+        _scoreText.text = $"{score:F2}";
 
         _newBestText.text = ScoreManager.Instance.IsNewBest ? "New Best!" : "Score";
 
