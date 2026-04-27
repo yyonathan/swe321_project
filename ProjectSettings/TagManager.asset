@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Spike
   layers:
   - Default
   - TransparentFX
@@ -46,6 +47,9 @@ TagManager:
     locked: 0
   - name: Shadow
     uniqueID: 544349993
+    locked: 0
+  - name: Obstacle
+    uniqueID: 373509109
     locked: 0
   - name: Surface
     uniqueID: 801623427

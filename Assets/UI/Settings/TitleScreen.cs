@@ -32,6 +32,7 @@ public class TitleScreen : MonoBehaviour
         pauseButton.SetActive(true);
 
         Time.timeScale = 1f;
+        player.GetComponent<PlayerPhysics>().EnableMovement();
         _musicManager.StartMusic();
         ScoreManager.Instance.StartRun();
     }

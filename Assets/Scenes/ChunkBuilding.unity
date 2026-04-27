@@ -774,6 +774,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1293806505219830165, guid: a0569afe951027642b900dea6390ea56, type: 3}
   m_PrefabInstance: {fileID: 656958855}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &675754573
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 44.03109
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.82962096
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 737694846430351752, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109183097824996593, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
+      propertyPath: m_Name
+      value: DevilLadderHard
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
 --- !u!1001 &681422110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1927,6 +1984,7 @@ MonoBehaviour:
   _chunkWidth: 4.8
   _verticalPadding: 0.4
   _difficulty: 0
+  _canRepeat: 1
 --- !u!114 &7097621737711858121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1942,6 +2000,7 @@ MonoBehaviour:
   _chunkWidth: 4.8
   _verticalPadding: 0.4
   _difficulty: 0
+  _canRepeat: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1965,3 +2024,4 @@ SceneRoots:
   - {fileID: 3603967763594083575}
   - {fileID: 491931869}
   - {fileID: 78321166}
+  - {fileID: 675754573}

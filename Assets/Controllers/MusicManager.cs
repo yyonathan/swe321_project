@@ -7,6 +7,7 @@ public class MusicManager : MonoBehaviour
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
+        _audioSource.Stop();
     }
 
     public void StartMusic()

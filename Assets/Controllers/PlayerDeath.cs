@@ -30,6 +30,7 @@ public class PlayerDeath : MonoBehaviour
     private void Die()
     {
         _isDead = true;
+        GetComponent<PlayerPhysics>().DisableMovement();
         OnPlayerDeath?.Invoke();
     }
 
@@ -38,4 +39,14 @@ public class PlayerDeath : MonoBehaviour
     {
         _isDead = false;
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (_isDead) return;
+        if (other.CompareTag("Spike"))
+        {
+            Die();
+        }
+    }
 }
+

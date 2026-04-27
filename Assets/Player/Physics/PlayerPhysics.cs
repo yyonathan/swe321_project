@@ -259,5 +259,16 @@ public class PlayerPhysics : MonoBehaviour
         Gizmos.DrawWireCube(transform.position - transform.up * _castDistance, _boxSize);
     }
 
+    public void DisableMovement()
+    {
+        _moveInput = Vector2.zero;
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+        enabled = false;
+    }
+
+    public void EnableMovement()
+    {
+        enabled = true;
+    }
 }
 
