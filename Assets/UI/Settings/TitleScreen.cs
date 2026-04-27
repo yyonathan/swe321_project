@@ -10,6 +10,7 @@ public class TitleScreen : MonoBehaviour
     [SerializeField] private CameraManager _cameraManager;
     [SerializeField] private ChunkManager _chunkManager;
     [SerializeField] private MusicManager _musicManager;
+    [SerializeField] private GameObject _scoreTimer;
 
     private Vector3 _playerStartPos;
 
@@ -29,6 +30,7 @@ public class TitleScreen : MonoBehaviour
         titleCanvas.SetActive(false);
         HUD.SetActive(true);
         player.SetActive(true);
+        _scoreTimer.SetActive(true);
         pauseButton.SetActive(true);
 
         Time.timeScale = 1f;
@@ -47,6 +49,7 @@ public class TitleScreen : MonoBehaviour
 
         HUD.SetActive(false);
         pauseButton.SetActive(false);
+        _scoreTimer.SetActive(false);
         titleCanvas.SetActive(true);
 
         Time.timeScale = 0f;

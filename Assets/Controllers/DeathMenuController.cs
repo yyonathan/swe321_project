@@ -26,7 +26,7 @@ public class DeathMenuController : MonoBehaviour
         _deathCanvas.SetActive(true);
 
         float score = ScoreManager.Instance.CurrentScore;
-        _scoreText.text = $"{score:F1}s";
+        _scoreText.text = $"{score:F2} s";
 
         _newBestText.text = ScoreManager.Instance.IsNewBest ? "New Best!" : "Score";
 
@@ -35,21 +35,18 @@ public class DeathMenuController : MonoBehaviour
         _nameInputField.text = savedName;
     }
 
-    // hooked up to SubmitButton's OnClick in the inspector
-    public void OnSubmitPressed()
-    {
-        string name = _nameInputField.text.Trim();
-        if (string.IsNullOrEmpty(name)) return;
-
-        PlayerPrefs.SetString("PlayerName", name);
-        PlayerPrefs.Save();
-
-        _leaderboard.Submit(name);
-    }
-
     // hooked up to MenuButton's OnClick in the inspector
     public void OnMenuButtonPressed()
     {
+        string name = _nameInputField.text.Trim();
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            PlayerPrefs.SetString("PlayerName", name);
+            PlayerPrefs.Save();
+            _leaderboard.Submit(name);
+        }
+
         _deathCanvas.SetActive(false);
         _titleScreen.ReturnToMenu();
     }
