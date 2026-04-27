@@ -28,6 +28,15 @@ public class OnScreenControls : MonoBehaviour
         EnhancedTouchSupport.Disable();
     }
 
+    private void Start()
+    {
+        bool isMobile = Application.isMobilePlatform;
+        Debug.Log("isMobile: " + isMobile);
+        _leftButton.gameObject.SetActive(isMobile);
+        _rightButton.gameObject.SetActive(isMobile);
+        _jumpButton.gameObject.SetActive(isMobile);
+    }
+
     private void Update()
     {
         bool hasLeft = false;

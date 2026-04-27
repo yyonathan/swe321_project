@@ -1592,15 +1592,20 @@ MonoBehaviour:
   - {fileID: 4541083320227361756, guid: 55c7f0a8544ae9049b2f200ba044843a, type: 3}
   - {fileID: 4541083320227361756, guid: 4f9cd1c99d0a50d46ae4f7bec224abe9, type: 3}
   - {fileID: 4541083320227361756, guid: 4d7695a23c7b0244598761062ece323c, type: 3}
+  - {fileID: 4541083320227361756, guid: 3cc7465781cc4bc4bb64dde72e7f99ed, type: 3}
+  - {fileID: 4541083320227361756, guid: fb0fa081674f18c4d9a5eefb4169632c, type: 3}
   _mediumChunks:
   - {fileID: 4541083320227361756, guid: f537c2296b674c4419d2e9528a6c0575, type: 3}
   - {fileID: 4541083320227361756, guid: 11eba8db08a9d19469b7e6a81272ae72, type: 3}
   - {fileID: 4541083320227361756, guid: ad4bcfa2c77c7c947aaeb856e8779608, type: 3}
+  - {fileID: 4541083320227361756, guid: 84e4976aabc13ea47b141e46a8ceb35a, type: 3}
+  - {fileID: 4541083320227361756, guid: bc66c819cf2680a4f8f6a466f416f766, type: 3}
   _hardChunks:
   - {fileID: 3109183097824996593, guid: 88a20f105db8bf548b48b32640c88140, type: 3}
   - {fileID: 3109183097824996593, guid: b32549165773f764cb6574b592ccef18, type: 3}
   - {fileID: 3109183097824996593, guid: 5227d9a8b5671634387092c1eb31557a, type: 3}
   - {fileID: 3109183097824996593, guid: ef05aed0a7ef4d04cb763756f185ccf7, type: 3}
+  - {fileID: 3109183097824996593, guid: e584f12c0fc1d8b408b81ed42d427378, type: 3}
   _initialSpawnY: -1.2
   _spawnBuffer: 2
   _phases:
@@ -2026,7 +2031,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001098986}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
