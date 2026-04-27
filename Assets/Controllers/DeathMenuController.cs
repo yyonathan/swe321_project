@@ -7,6 +7,9 @@ public class DeathMenuController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _newBestText;
     [SerializeField] private TitleScreen _titleScreen;
+    [SerializeField] private TMP_InputField _nameInputField;
+
+    [SerializeField] private Leaderboard _leaderboard;
 
     private void OnEnable()
     {
@@ -26,8 +29,25 @@ public class DeathMenuController : MonoBehaviour
         _scoreText.text = $"{score:F1}s";
 
         _newBestText.text = ScoreManager.Instance.IsNewBest ? "New Best!" : "Score";
+
+        // pre fill with saved name if one exists
+        string savedName = PlayerPrefs.GetString("PlayerName", "");
+        _nameInputField.text = savedName;
     }
 
+    // hooked up to SubmitButton's OnClick in the inspector
+    public void OnSubmitPressed()
+    {
+        string name = _nameInputField.text.Trim();
+        if (string.IsNullOrEmpty(name)) return;
+
+        PlayerPrefs.SetString("PlayerName", name);
+        PlayerPrefs.Save();
+
+        _leaderboard.Submit(name);
+    }
+
+    // hooked up to MenuButton's OnClick in the inspector
     public void OnMenuButtonPressed()
     {
         _deathCanvas.SetActive(false);

@@ -11,6 +11,7 @@ public class Leaderboard : MonoBehaviour
 {
     // Database URL Constant
     private const string DATABSEURL = "https://upmaxxing-5205d-default-rtdb.firebaseio.com/";
+    private float _pendingScore;
 
     // "subscribing" to the death event
     void Start()
@@ -31,34 +32,18 @@ public class Leaderboard : MonoBehaviour
     // hopefully those 3 variables are enough to work with
     private void HandleDeath()
     {
-        // player's locally saved name, should never be empty by this point
-        string playerName = PlayerPrefs.GetString("PlayerName", "Unknown");
-
-        // time survived in seconds
-        float score = ScoreManager.Instance.CurrentScore;
-
-        // only submit to Firebase if this is a new personal best
-        float highScore = ScoreManager.Instance.PersonalBest;
-
-        Debug.Log("Name: " + playerName);
-        Debug.Log("Score: " + score);
-        Debug.Log("Personal Best: " + highScore);
-
-        SubmitScore(playerName, score);
-        // if(score >= highScore)
-        // {
-        //     Debug.Log("New best made");
-        //     SubmitScore(playerName, score);
-        // } else
-        // {
-        //     Debug.Log("No new best showing");
-        // }
-
+        _pendingScore = ScoreManager.Instance.CurrentScore;
 
         // here's my idea for the leaderboard: (if you want to implement it in a different way feel free)
         // each player will have only one entry in the database, storing their name, highest score, and date of the run.
         // a player's entry will be keyed by player's name
     }
+
+    public void Submit(string playerName)
+    {
+        SubmitScore(playerName, _pendingScore);
+    }
+
 
     // this should fetch the entries from Firebase, sorted by score descending
     // i can handle passing the results to the UI for displaying purposes
